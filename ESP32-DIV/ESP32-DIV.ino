@@ -13,6 +13,15 @@
 
 TFT_eSPI tft = TFT_eSPI();
 
+void initDisplay() {
+  tft.init();
+  tft.setRotation(1);  // Landscape
+  tft.fillScreen(TFT_BLACK);
+  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+  tft.setTextFont(2);
+  tft.drawCentreString("ESP32-DIV on CYD", 120, 20, 2);
+}
+
 #define pcf_ADDR 0x20
 PCF8574 pcf(pcf_ADDR);
 
