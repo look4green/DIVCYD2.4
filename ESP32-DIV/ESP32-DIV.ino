@@ -1,5 +1,6 @@
 #define BUILD_VERSION "DIVCYD2.4 Touch Edition"
 #define BACKLIGHT_TIMEOUT 60000  // 60 seconds
+//#include <ArduinoFFT.h>
 #include <Arduino.h>
 #include <TFT_eSPI.h>
 #include <Wire.h>
