@@ -16,12 +16,6 @@ TFT_eSPI tft = TFT_eSPI();
 #define pcf_ADDR 0x20
 PCF8574 pcf(pcf_ADDR);
 
-//#define BTN_UP     6
-//#define BTN_DOWN   3
-//#define BTN_LEFT   4
-//#define BTN_RIGHT  5
-//#define BTN_SELECT 7
-
 bool feature_exit_requested = false;
 
 const int NUM_MENU_ITEMS = 8;
@@ -1506,7 +1500,7 @@ void handleSubGHzSubmenuTouch() {
 
 if (ts.touched() && !feature_active) {
     TS_Point p = ts.getPoint();
-    delay(10);
+    delay(10);  // Basic debounce
 
     int x = ::map(p.x, TS_MINX, TS_MAXX, 0, 239);
     int y = ::map(p.y, TS_MAXY, TS_MINY, 0, 319);
@@ -1526,7 +1520,7 @@ if (ts.touched() && !feature_active) {
             displaySubmenu();
             delay(200);
 
-            // === Menu Item Actions ===
+            // === Exit Submenu (e.g. "Back") ===
             if (current_submenu_index == 4) {
                 in_sub_menu = false;
                 feature_active = false;
@@ -1536,8 +1530,9 @@ if (ts.touched() && !feature_active) {
                 break;
             }
 
-            pinMode(26, INPUT);
-            pinMode(16, INPUT);
+            // Common setup
+            pinMode(NRF_CE, INPUT);
+            pinMode(NRF_CSN, INPUT);
             feature_active = true;
             feature_exit_requested = false;
             in_sub_menu = true;
@@ -1547,7 +1542,10 @@ if (ts.touched() && !feature_active) {
                     replayat::ReplayAttackSetup();
                     while (!feature_exit_requested) {
                         replayat::ReplayAttackLoop();
-                        if (ts.touched()) break;
+                        if (ts.touched()) {
+                            while (ts.touched()) delay(10);  // wait for release
+                            break;
+                        }
                     }
                     break;
 
@@ -1555,7 +1553,10 @@ if (ts.touched() && !feature_active) {
                     subjammer::subjammerSetup();
                     while (!feature_exit_requested) {
                         subjammer::subjammerLoop();
-                        if (ts.touched()) break;
+                        if (ts.touched()) {
+                            while (ts.touched()) delay(10);
+                            break;
+                        }
                     }
                     break;
 
@@ -1563,12 +1564,15 @@ if (ts.touched() && !feature_active) {
                     SavedProfile::saveSetup();
                     while (!feature_exit_requested) {
                         SavedProfile::saveLoop();
-                        if (ts.touched()) break;
+                        if (ts.touched()) {
+                            while (ts.touched()) delay(10);
+                            break;
+                        }
                     }
                     break;
             }
 
-            // Exit back to submenu if requested
+            // Cleanup and return to submenu
             feature_active = false;
             feature_exit_requested = false;
             submenu_initialized = false;
