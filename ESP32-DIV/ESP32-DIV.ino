@@ -17,6 +17,8 @@ TFT_eSPI tft = TFT_eSPI();
 #define pcf_ADDR 0x20
 PCF8574 pcf(pcf_ADDR);
 
+#define BACKLIGHT_TIMEOUT 60000  // 60 seconds
+
 bool feature_exit_requested = false;
 
 const int NUM_MENU_ITEMS = 8;
@@ -208,6 +210,12 @@ void updateActiveSubmenu() {
     }
 }
 
+if (millis() - last_interaction_time > BACKLIGHT_TIMEOUT) {
+  digitalWrite(TFT_BL, LOW);  // Turn off backlight
+} else {
+  digitalWrite(TFT_BL, HIGH); // Keep backlight on
+}
+
 bool isButtonPressed(int buttonPin) {
   return !pcf.digitalRead(buttonPin);
 }
@@ -217,14 +225,6 @@ unsigned long last_interaction_time = 0;
 
 void waitForTouchRelease() {
   while (ts.touched()) delay(10);
-}
-
-#define BACKLIGHT_TIMEOUT 60000  // 60 seconds
-
-if (millis() - last_interaction_time > BACKLIGHT_TIMEOUT) {
-  digitalWrite(TFT_BL, LOW);
-} else {
-  digitalWrite(TFT_BL, HIGH);
 }
 
 
