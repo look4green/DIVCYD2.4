@@ -1,3 +1,4 @@
+#include "config.h"
 #include <Arduino.h>
 #include <TFT_eSPI.h>
 #include <Wire.h>
