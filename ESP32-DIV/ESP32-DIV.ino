@@ -1530,48 +1530,40 @@ if (ts.touched() && !feature_active) {
                 break;
             }
 
-            // Common setup
-            pinMode(NRF_CE, INPUT);
-            pinMode(NRF_CSN, INPUT);
-            feature_active = true;
-            feature_exit_requested = false;
-            in_sub_menu = true;
+       // Common setup
+       pinMode(NRF_CE, INPUT);
+       pinMode(NRF_CSN, INPUT);
+       feature_active = true;
+       feature_exit_requested = false;
+       in_sub_menu = true;
 
-            switch (current_submenu_index) {
-                case 0:
-                    replayat::ReplayAttackSetup();
-                    while (!feature_exit_requested) {
-                        replayat::ReplayAttackLoop();
-                        if (ts.touched()) {
-                            while (ts.touched()) delay(10);  // wait for release
-                            break;
-                        }
-                    }
-                    break;
+switch (current_submenu_index) {
+    case 0:
+        launchReplayAttack();
+        break;
 
-                case 2:
-                    subjammer::subjammerSetup();
-                    while (!feature_exit_requested) {
-                        subjammer::subjammerLoop();
-                        if (ts.touched()) {
-                            while (ts.touched()) delay(10);
-                            break;
-                        }
-                    }
-                    break;
-
-                case 3:
-                    SavedProfile::saveSetup();
-                    while (!feature_exit_requested) {
-                        SavedProfile::saveLoop();
-                        if (ts.touched()) {
-                            while (ts.touched()) delay(10);
-                            break;
-                        }
-                    }
-                    break;
+    case 2:
+        subjammer::subjammerSetup();
+        while (!feature_exit_requested) {
+            subjammer::subjammerLoop();
+            if (ts.touched()) {
+                while (ts.touched()) delay(10);
+                break;
             }
+        }
+        break;
 
+    case 3:
+        SavedProfile::saveSetup();
+        while (!feature_exit_requested) {
+            SavedProfile::saveLoop();
+            if (ts.touched()) {
+                while (ts.touched()) delay(10);
+                break;
+            }
+        }
+        break;
+}
             // Cleanup and return to submenu
             feature_active = false;
             feature_exit_requested = false;
@@ -2278,4 +2270,15 @@ void setup() {
   displayMenu();  // Initial screen
   drawStatusBar(currentBatteryVoltage, false);
   last_interaction_time = millis();
+}
+
+void launchReplayAttack() {
+  replayat::ReplayAttackSetup();
+  while (!feature_exit_requested) {
+    replayat::ReplayAttackLoop();
+    if (ts.touched()) {
+      while (ts.touched()) delay(10);  // debounce
+      break;
+    }
+  }
 }
