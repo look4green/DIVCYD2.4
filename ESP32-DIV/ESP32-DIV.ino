@@ -1,4 +1,5 @@
 #define BUILD_VERSION "DIVCYD2.4 Touch Edition"
+#define BACKLIGHT_TIMEOUT 60000  // 60 seconds
 #include <Arduino.h>
 #include <TFT_eSPI.h>
 #include <Wire.h>
@@ -16,8 +17,6 @@ TFT_eSPI tft = TFT_eSPI();
 
 #define pcf_ADDR 0x20
 PCF8574 pcf(pcf_ADDR);
-
-#define BACKLIGHT_TIMEOUT 60000  // 60 seconds
 
 bool feature_exit_requested = false;
 
@@ -210,12 +209,6 @@ void updateActiveSubmenu() {
     }
 }
 
-if (millis() - last_interaction_time > BACKLIGHT_TIMEOUT) {
-  digitalWrite(TFT_BL, LOW);  // Turn off backlight
-} else {
-  digitalWrite(TFT_BL, HIGH); // Keep backlight on
-}
-
 bool isButtonPressed(int buttonPin) {
   return !pcf.digitalRead(buttonPin);
 }
@@ -226,7 +219,6 @@ unsigned long last_interaction_time = 0;
 void waitForTouchRelease() {
   while (ts.touched()) delay(10);
 }
-
 
 int last_submenu_index = -1; 
 bool submenu_initialized = false; 
@@ -311,6 +303,12 @@ const uint16_t icon_colors[NUM_MENU_ITEMS] = {
   0xFFFF  // About
 };
   
+  if (millis() - last_interaction_time > BACKLIGHT_TIMEOUT) {
+  digitalWrite(TFT_BL, LOW);  // Turn off backlight
+} else {
+  digitalWrite(TFT_BL, HIGH); // Keep backlight on
+}
+
     submenu_initialized = false;
     last_submenu_index = -1;
     tft.setTextFont(2);
@@ -2264,5 +2262,12 @@ void launchReplayAttack() {
       while (ts.touched()) delay(10);  // debounce
       break;
     }
+  }
+}
+void manageBacklight() {
+  if (millis() - last_interaction_time > BACKLIGHT_TIMEOUT) {
+    digitalWrite(TFT_BL, LOW);  // Turn off backlight
+  } else {
+    digitalWrite(TFT_BL, HIGH); // Keep backlight on
   }
 }
