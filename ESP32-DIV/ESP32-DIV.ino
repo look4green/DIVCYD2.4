@@ -1,3 +1,4 @@
+#define BUILD_VERSION "DIVCYD2.4 Touch Edition"
 #include <Arduino.h>
 #include <TFT_eSPI.h>
 #include <Wire.h>
@@ -214,20 +215,17 @@ bool isButtonPressed(int buttonPin) {
 float currentBatteryVoltage = readBatteryVoltage();
 unsigned long last_interaction_time = 0;
 
-
-/*
-#define BACKLIGHT_PIN 4
-
-const unsigned long BACKLIGHT_TIMEOUT = 100000;
-
-void manageBacklight() {
-  if (millis() - last_interaction_time > BACKLIGHT_TIMEOUT) {
-    digitalWrite(BACKLIGHT_PIN, LOW);
-  } else {
-    digitalWrite(BACKLIGHT_PIN, HIGH);
-  }
+void waitForTouchRelease() {
+  while (ts.touched()) delay(10);
 }
-*/
+
+#define BACKLIGHT_TIMEOUT 60000  // 60 seconds
+
+if (millis() - last_interaction_time > BACKLIGHT_TIMEOUT) {
+  digitalWrite(TFT_BL, LOW);
+} else {
+  digitalWrite(TFT_BL, HIGH);
+}
 
 
 int last_submenu_index = -1; 
@@ -1543,25 +1541,11 @@ switch (current_submenu_index) {
         break;
 
     case 2:
-        subjammer::subjammerSetup();
-        while (!feature_exit_requested) {
-            subjammer::subjammerLoop();
-            if (ts.touched()) {
-                while (ts.touched()) delay(10);
-                break;
-            }
-        }
+        launchSubJammer();
         break;
 
     case 3:
-        SavedProfile::saveSetup();
-        while (!feature_exit_requested) {
-            SavedProfile::saveLoop();
-            if (ts.touched()) {
-                while (ts.touched()) delay(10);
-                break;
-            }
-        }
+        launchProfileSaver();
         break;
 }
             // Cleanup and return to submenu
