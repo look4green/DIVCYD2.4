@@ -15,7 +15,6 @@
 #include <Wire.h>
 
 extern TFT_eSPI tft;
-extern PCF8574 pcf;
 
 
 // Define touchscreen pins (updated with your values)
