@@ -56,3 +56,15 @@ This project runs on the **CYD 2.4-inch ESP32-2432S024R** development board, fea
 #define LOAD_FONT7
 #define LOAD_FONT8
 #define LOAD_GFXFF
+
+💾 SD Card SPI Pin Map (VSPI)
+| Signal | GPIO | Description | 
+| MISO | 19 | Master In Slave Out | 
+| MOSI | 23 | Master Out Slave In | 
+| SCK | 18 | SPI Clock | 
+| CS | 5 | Chip Select | 
+
+
+
+
+
