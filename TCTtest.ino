@@ -9,7 +9,7 @@ TFT_eSPI tft = TFT_eSPI();  // TFT instance
 void setup() {
   Serial.begin(115200);
   tft.begin();
-  tft.setRotation(3);
+  tft.setRotation(0);
   // tft.setTouch(calData);  // Optional
   tft.fillScreen(TFT_BLACK);
   tft.setTextColor(TFT_WHITE, TFT_BLACK);
@@ -22,7 +22,7 @@ void loop() {
   uint16_t x, y;
   if (tft.getTouch(&x, &y)) {
     Serial.printf("Touch at x=%d y=%d\n", x, y);
-    tft.fillCircle(x, y, 5, TFT_RED);
-    delay(300);
+    tft.fillCircle(x, y, 3, TFT_RED);
+    delay(100);
   }
 }
