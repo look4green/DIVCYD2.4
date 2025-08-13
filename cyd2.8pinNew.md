@@ -1,11 +1,11 @@
-Here’s your complete and corrected pins.md file for the ESP32-WROOM-32U project, integrating:
+Here’s your clean and complete pins.md file for the ESP32-WROOM-32U project, now optimized for:
 - 📺 TFT display
 - 🖱️ Touch controller
 - 💾 SD card
-- 📡 Three NRF24L01 modules
+- 📡 Two NRF24L01 modules
 - 📶 CC1101 RF transceiver
-- 🎮 Physical buttons
-All GPIOs are carefully selected to avoid boot conflicts, flash memory pins, and inaccessible inputs.
+- 🎮 Grouped physical buttons (GPIOs 26, 32–35)
+All GPIOs are safe, accessible, and conflict-free for this module.
 
 📌 pins.md — ESP32-WROOM-32U Peripheral Pin Mapping
 📺 TFT Display (ILI9341 via HSPI)
@@ -39,11 +39,10 @@ All GPIOs are carefully selected to avoid boot conflicts, flash memory pins, and
 
 
 
-📡 NRF24L01 Modules (3x)
+📡 NRF24L01 Modules (2x)
 | Module | CE GPIO | CS GPIO | Notes | 
-| NRF24 #1 | 26 | 25 | Dedicated control pins | 
-| NRF24 #2 | 17 | 22 | Safe and available | 
-| NRF24 #3 | 33 | 32 | Avoids boot-sensitive pins | 
+| NRF24 #1 | 17 | 22 | Safe and available | 
+| NRF24 #2 | 33 | 32 | Grouped with buttons | 
 
 
 | Shared SPI | GPIO | 
@@ -55,7 +54,7 @@ All GPIOs are carefully selected to avoid boot conflicts, flash memory pins, and
 
 📶 CC1101 RF Transceiver
 | Signal | GPIO | Notes | 
-| CC1101_CS | 35 | Use only if broken out | 
+| CC1101_CS | 25 | Chip Select | 
 | CC1101_SCK | 18 | Shared SPI Clock | 
 | CC1101_MOSI | 23 | Shared SPI MOSI | 
 | CC1101_MISO | 19 | Shared SPI MISO | 
@@ -64,14 +63,16 @@ All GPIOs are carefully selected to avoid boot conflicts, flash memory pins, and
 
 
 
-🎮 Physical Buttons
+🎮 Physical Buttons (Grouped)
 | Button | GPIO | Notes | 
 | BTN_UP | 32 |  | 
 | BTN_DOWN | 33 |  | 
-| BTN_LEFT | 26 |  | 
-| BTN_RIGHT | 17 |  | 
-| BTN_SELECT | 22 |  | 
+| BTN_LEFT | 34 | Input-only | 
+| BTN_RIGHT | 35 | Input-only | 
+| BTN_SELECT | 26 |  | 
 
+
+All buttons use INPUT_PULLUP mode and are placed near each other for clean wiring.
 
 
 
