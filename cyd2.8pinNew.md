@@ -65,10 +65,10 @@ All GPIOs are safe, accessible, and conflict-free for this module.
 
 🎮 Physical Buttons (Grouped)
 | Button | GPIO | Notes | 
-| BTN_UP | 32 |  | 
-| BTN_DOWN | 33 |  | 
-| BTN_LEFT | 34 | Input-only | 
-| BTN_RIGHT | 35 | Input-only | 
+| BTN_UP | 34 |  | 
+| BTN_DOWN | 35 |  | 
+| BTN_LEFT | 32 | Input-only | 
+| BTN_RIGHT | 33 | Input-only | 
 | BTN_SELECT | 26 |  | 
 
 
