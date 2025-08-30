@@ -8,7 +8,6 @@ This project runs on the **CYD 2.4-inch ESP32-2432S024R** development board, fea
 ## 🔧 Board Features
 - **ESP32 Dual-core processor**
 - **240x320 ILI9341 TFT display** (SPI)
-- **CST820 Capacitive touch screen** (I2C)
 - **MicroSD card slot**
 - **RGB LED** (R/G/B)
 
@@ -33,7 +32,7 @@ This project runs on the **CYD 2.4-inch ESP32-2432S024R** development board, fea
 #define TFT_DC    2
 #define TFT_RST  -1  // Use -1 if connected to board RST
 
-// Touchscreen (XPT2046) SPI Pins
+// Touchscreen SPI Pins
 #define TOUCH_CS 33
 #define TOUCH_IRQ 36
 #define TOUCH_MOSI 32
